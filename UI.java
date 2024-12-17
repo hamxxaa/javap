@@ -4,28 +4,32 @@ public class UI {
 
     private Player player;
     private Scanner scanner;
+    private Deck deck;
 
-    UI(Player player) {
+    UI(Player player, Deck deck) {
         this.player = player;
+        this.deck = deck;
         this.scanner = new Scanner(System.in);
     }
 
     public void displayHand() {
         System.out.println("Player's hand:");
+        System.out.println("0: Draw a card");
         int i = 1;
         for (BaseCard card : player.getHand()) {
             System.out.println(i + ": " + card);
             i++;
         }
-        System.out.println(i + ": Draw a card");
     }
 
     public int getMove() {
         displayHand();
+        System.out.println("Top card: " + deck.topCard);
         System.out.println("Enter the card you want to play:");
         while (true) {
             int move = scanner.nextInt();
-            if (move >= 1 && move <= player.getHandSize() + 1) {
+            System.out.println("move:" + move + "handsize: " + player.getHandSize());
+            if (move >= 0 && move <= player.getHandSize()) {
                 return move;
             } else {
                 System.out.println("Invalid move. Please try again.");

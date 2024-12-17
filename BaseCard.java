@@ -16,6 +16,6 @@ public class BaseCard {
     }
 
     public String toString() {
-        return color + " " + value;
+        return (this.color + " " + this.value);
     }
 }

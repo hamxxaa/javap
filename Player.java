@@ -16,8 +16,18 @@ public class Player {
         return hand;
     }
 
-    public void playCard(int index) {
-        hand.remove(index);
+    public BaseCard playCard(int index, BaseCard topCard) {
+        if (isCardPlayable(index, topCard)) {
+            BaseCard card = hand.remove(index);
+            return card;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isCardPlayable(int cardToPlay, BaseCard topCard) {
+        return hand.get(cardToPlay).getColor().equals(topCard.getColor())
+                || hand.get(cardToPlay).getValue() == topCard.getValue();
     }
 
     public int getHandSize() {

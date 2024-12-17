@@ -6,9 +6,9 @@ public class UI {
     private Scanner scanner;
     private Deck deck;
 
-    UI(Player player, Deck deck) {
+    UI(Player player) {
         this.player = player;
-        this.deck = deck;
+        this.deck = player.getDeck();
         this.scanner = new Scanner(System.in);
     }
 
@@ -35,6 +35,5 @@ public class UI {
                 System.out.println("Invalid move. Please try again.");
             }
         }
-
     }
 }

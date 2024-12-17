@@ -2,10 +2,10 @@ import java.util.Random;
 
 public class Deck {
     private BaseCard[] cards;
-    private static final int DECK_SIZE = 80;
+    private static final int DECK_SIZE = 88;
     private static final int MAX_COLOR = 4;
     private String[] colors = { "Red", "Green", "Blue", "Yellow" };
-    private int[] values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    private int[] values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     private int top = 0;
     public BaseCard topCard;
 
@@ -38,5 +38,9 @@ public class Deck {
         } else {
             throw new IllegalStateException("No cards left in the deck");
         }
+    }
+
+    public void updateTopCard(BaseCard playedCard) {
+        this.topCard = playedCard;
     }
 }

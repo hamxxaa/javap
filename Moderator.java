@@ -1,11 +1,10 @@
 public class Moderator {
 
     private static final int MAX_PLAYERS = 4;
-    private UI ui;
     private Player player1;
     private Deck deck;
-    private Player bots[];
-    private static int botCount = 0;
+    private Player queue[];
+    private static int botCount = 1;
     private boolean playing = true;
 
     public static void main(String[] args) {
@@ -15,58 +14,56 @@ public class Moderator {
     }
 
     public Moderator() {
-        this.bots = new Player[MAX_PLAYERS];
+        this.queue = new Player[MAX_PLAYERS];
     }
 
     public void InitializeGame() {
-        System.out.println("i");
         this.deck = new Deck();
-        this.player1 = new Player();
-        this.ui = new UI(player1, deck);
+        this.player1 = new Player(deck, this);
+        queue[0] = player1;
+        player1.createUI();
         while (botCount < MAX_PLAYERS) {
             addBot();
-            System.out.println("ii");
         }
-        System.out.println("iii");
-
         for (int i = 0; i < 7; i++) {
-            player1.drawCard(deck);
-            for (Player bot : bots) {
-                bot.drawCard(deck);
+            for (Player player : queue) {
+                player.drawCard();
             }
         }
-        deck.topCard = deck.drawCard();
+        deck.updateTopCard(deck.drawCard());
     }
 
     public void PlayGame() {
         System.out.println("Game started");
-        System.out.println("Play the first card");
-        int move;
         while (playing) {
-            move = this.ui.getMove();
-            if (move == 0) {
-                player1.drawCard(deck);
-            } else {
-                BaseCard playedCard = player1.playCard(move - 1, deck.topCard);
-                if (playedCard == null) {
-                    System.out.println("This card is not playable");
-                    continue;
-                } else {
-                    updateTopCard(playedCard);
+            for (Player player : queue) {
+                player.doMove();
+                if (player.getHandSize() == 0) {
+                    playing = false;
+                    System.out.println(player + " wins!");
+                    break;
                 }
             }
         }
-
     }
 
     public void addBot() {
         if (botCount < MAX_PLAYERS) {
-            bots[botCount] = new Player();
+            queue[botCount] = new Bot(this.deck, this);
             botCount++;
         }
     }
 
-    public void updateTopCard(BaseCard playedCard) {
-        deck.topCard = playedCard;
+    public Player getNextPlayer(Player p) {
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            if (queue[i] == p) {
+                return queue[(i + 1) % MAX_PLAYERS];
+            }
+        }
+        return null;
+    }
+
+    public void blockPlayer(Player p) {
+        p.blocked = true;
     }
 }

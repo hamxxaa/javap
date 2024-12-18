@@ -2,19 +2,28 @@ public class BaseCard {
     private String color;
     private int value;
 
+    // Constructor to initialize card with color and value
     public BaseCard(String color, int value) {
         this.color = color;
         this.value = value;
     }
 
+    // Getter for color
     public String getColor() {
         return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    // Getter for value
     public int getValue() {
         return value;
     }
 
+    // Override toString method to provide a string representation of the card
+    @Override
     public String toString() {
         if (value == 10) {
             return (this.color + " " + "Block");

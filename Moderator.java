@@ -3,67 +3,83 @@ public class Moderator {
     private static final int MAX_PLAYERS = 4;
     private Player player1;
     private Deck deck;
-    private Player queue[];
+    public CircularDoublyLinkedList queue;
     private static int botCount = 1;
     private boolean playing = true;
 
+    // Main method to start the game
     public static void main(String[] args) {
         Moderator moderator = new Moderator();
         moderator.InitializeGame();
         moderator.PlayGame();
     }
 
+    // Constructor to initialize the moderator
     public Moderator() {
-        this.queue = new Player[MAX_PLAYERS];
+        this.queue = new CircularDoublyLinkedList();
     }
 
+    // Method to create player and bots and initialize the game
     public void InitializeGame() {
         this.deck = new Deck();
         this.player1 = new Player(deck, this);
-        queue[0] = player1;
+        queue.addNode(player1);
+        ;
         player1.createUI();
         while (botCount < MAX_PLAYERS) {
             addBot();
         }
         for (int i = 0; i < 7; i++) {
-            for (Player player : queue) {
-                player.drawCard();
-            }
+            queue.forEach(player -> player.drawCard());
         }
         deck.updateTopCard(deck.drawCard());
+
     }
 
+    // Method to start and play the game
     public void PlayGame() {
         System.out.println("Game started");
         while (playing) {
-            for (Player player : queue) {
+            queue.forEach(player -> {
                 player.doMove();
-                if (player.getHandSize() == 0) {
-                    playing = false;
-                    System.out.println(player + " wins!");
-                    break;
-                }
-            }
+                didPlayerWin(player);// NEEDS TO BE IMPLEMENTED
+            });
         }
     }
 
+    // Method to add a bot to the game
     public void addBot() {
         if (botCount < MAX_PLAYERS) {
-            queue[botCount] = new Bot(this.deck, this);
+            queue.addNode(new Bot(deck, this, "Bot" + botCount));
             botCount++;
         }
     }
 
+    /*
+     * Method to get the next player of the given player in the queue
+     * 
+     * @param p The player whose next player is to be found
+     * 
+     * @return The next player in the queue
+     */
     public Player getNextPlayer(Player p) {
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            if (queue[i] == p) {
-                return queue[(i + 1) % MAX_PLAYERS];
-            }
-        }
-        return null;
+        return queue.get(p).next.data;
     }
 
+    /*
+     * Method to block the given player
+     * 
+     * @param p The player to block
+     */
     public void blockPlayer(Player p) {
         p.blocked = true;
+    }
+
+    // NEEDS TO BE IMPLEMENTED*-*
+    public void didPlayerWin(Player p) {
+        /*
+         * Checks if player has any cards left and sets playing to false if player has
+         * no cards left
+         */
     }
 }

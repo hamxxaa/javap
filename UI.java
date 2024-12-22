@@ -43,4 +43,28 @@ public class UI {
             }
         }
     }
+
+    public String getPlayerColorChoice() {
+        System.out.println("Choose a color for the wild card:");
+        System.out.println("1: Red");
+        System.out.println("2: Green");
+        System.out.println("3: Blue");
+        System.out.println("4: Yellow");
+        while (true) {
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    return "Red";
+                case 2:
+                    return "Green";
+                case 3:
+                    return "Blue";
+                case 4:
+                    return "Yellow";
+                default:
+                    System.out.println("Invalid choice. Please select a number between 1 and 4.");
+
+            }
+        }
+    }
 }

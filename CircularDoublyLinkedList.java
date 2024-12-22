@@ -79,6 +79,18 @@ class CircularDoublyLinkedList {
         return null; // Value not found
     }
 
+    public Player getRandromPlayer() {
+        if (head == null)
+            return null;
+
+        Node current = head;
+        int rand = (int) (Math.random() * 10) % 4;
+        for (int i = 0; i < rand; i++) {
+            current = current.next;
+        }
+        return current.data;
+    }
+
     // Method to reverse the list
     public void reverse() {
         Node temp = null;
@@ -89,5 +101,9 @@ class CircularDoublyLinkedList {
             current.next = temp;
             current = current.prev;
         } while (current != head);
+    }
+
+    public Node getHead() {
+        return head;
     }
 }

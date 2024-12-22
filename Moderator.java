@@ -6,6 +6,7 @@ public class Moderator {
     public CircularDoublyLinkedList queue;
     private static int botCount = 1;
     private boolean playing = true;
+    private Player currentPlayer;
 
     // Main method to start the game
     public static void main(String[] args) {
@@ -33,17 +34,16 @@ public class Moderator {
             queue.forEach(player -> player.drawCard());
         }
         deck.updateTopCard(deck.drawCard());
-
     }
 
     // Method to start and play the game
     public void PlayGame() {
+        currentPlayer = queue.getRandromPlayer();
         System.out.println("Game started");
+        System.out.println("Top card: " + deck.topCard);
         while (playing) {
-            queue.forEach(player -> {
-                player.doMove();
-                didPlayerWin(player);// NEEDS TO BE IMPLEMENTED
-            });
+            currentPlayer.doMove();
+            didPlayerWin(currentPlayer);// NEEDS TO BE IMPLEMENTED
         }
     }
 
@@ -75,11 +75,19 @@ public class Moderator {
         p.blocked = true;
     }
 
-    // NEEDS TO BE IMPLEMENTED*-*
+    /*
+     * Check if the player has won the game
+     * 
+     * @param p The player to check for winning
+     */
     public void didPlayerWin(Player p) {
-        /*
-         * Checks if player has any cards left and sets playing to false if player has
-         * no cards left
-         */
+        if (p.getHandSize() == 0) {
+            System.out.println(p + " has won the game");
+            playing = false;
+        }
+    }
+
+    public void setCurrentPlayer(Player p) {
+        currentPlayer = p;
     }
 }

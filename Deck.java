@@ -2,9 +2,11 @@ import java.util.Random;
 
 public class Deck {
     private BaseCard[] cards;
-    private static final int DECK_SIZE = 96;
-    private String[] colors = { "Red", "Green", "Blue", "Yellow" };
-    private int[] values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };// 10 is skip, 11 is reverse
+    private static final int DECK_SIZE = 112;
+    public String[] colors = { "Red", "Green", "Blue", "Yellow" };
+    private int[] values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };// 10 is skip, 11 is reverse, 12 is
+                                                                                // draw two, 13 is wild, 14 is wild draw
+                                                                                // four
     private int top = 0; // Index of the top card in the deck
     public BaseCard topCard; // The top card in the played deck
 
@@ -13,11 +15,16 @@ public class Deck {
         cards = new BaseCard[DECK_SIZE];
         int index = 0;
         for (String color : colors) {
-            for (int val : values) {
-                cards[index] = new BaseCard(color, val);
-                cards[index + 1] = new BaseCard(color, val);
+            for (int i = 0; i < 13; i++) {
+                cards[index] = new BaseCard(color, values[i]);
+                cards[index + 1] = new BaseCard(color, values[i]);
                 index += 2;
             }
+        }
+        for (int i = 0; i < 4 ; i++) {
+            cards[index] = new BaseCard("Wild", 13);
+            cards[index + 1] = new BaseCard("Wild", 14);
+            index += 2;
         }
         shuffleDeck();
     }

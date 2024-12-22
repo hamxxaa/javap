@@ -29,7 +29,7 @@ public class Player {
      * @return The card that was played. Null if the card is not playable
      */
     public BaseCard playCard(int index) {
-        if (isCardPlayable(index, deck.topCard)) {
+        if (isCardPlayable(hand.get(index), deck.topCard)) {
             BaseCard card = hand.remove(index);
             return card;
         } else {
@@ -46,9 +46,11 @@ public class Player {
      * 
      * @return True if the card is playable, false otherwise
      */
-    public boolean isCardPlayable(int cardToPlay, BaseCard topCard) {
-        return hand.get(cardToPlay).getColor().equals(topCard.getColor())
-                || hand.get(cardToPlay).getValue() == topCard.getValue();
+    public boolean isCardPlayable(BaseCard cardToPlay, BaseCard topCard) {
+        return cardToPlay.isSameColor(topCard)
+                || cardToPlay.isSameValue(topCard)
+                || cardToPlay.isWildCard()
+                || cardToPlay.isWildDrawFourCard();
     }
 
     // Method to get the size of the hand
@@ -59,21 +61,28 @@ public class Player {
     // Method to get a move from player and play the card
     public void doMove() {
         int move;
-        if (!blocked) {
-            move = this.ui.getMove();
-            if (move == 0) {
-                drawCard();
-            } else {
-                BaseCard playedCard = playCard(move - 1);
-                if (playedCard == null) {
-                    System.out.println("This card is not playable");
+        while (true) {
+            if (!blocked) {
+                move = this.ui.getMove();
+                if (move == 0) {
+                    drawCard();
+                    mod.setCurrentPlayer(mod.getNextPlayer(this));
+                    break;
                 } else {
-                    handleCards(playedCard);
+                    BaseCard playedCard = playCard(move - 1);
+                    if (playedCard == null) {
+                        System.out.println("This card is not playable");
+                    } else {
+                        handleCards(playedCard);
+                        break;
+                    }
                 }
+            } else {
+                blocked = false;
+                System.out.println("Player is blocked");
+                mod.setCurrentPlayer(mod.getNextPlayer(this));
+                break;
             }
-        } else {
-            blocked = false;
-            System.out.println("Player is blocked");
         }
     }
 
@@ -94,33 +103,65 @@ public class Player {
      * @param playedCard The card that was played
      */
     public void handleCards(BaseCard playedCard) {
+        deck.updateTopCard(playedCard);
         if (playedCard.getValue() == 10) {
             mod.blockPlayer(mod.getNextPlayer(this));
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
+
         } else if (playedCard.getValue() == 11) {
             mod.queue.reverse();
-        } else if (playedCard.getValue() == 12) {
-            handleWildCard(playedCard);// NEEDS TO BE IMPLEMENTED-----------------------------------------------------------
-        } else if (playedCard.getValue() == 13) {
-            /*
-             * Makes next player draw two cards and skips the next player
-             */
-        } else if (playedCard.getValue() == 14) {
-            /*
-             * Makes next player draw four cards and skips the next player
-             */
-            handleWildCard(playedCard);// NEEDS TO BE IMPLEMENTED-----------------------------------------------------------
-        }
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
 
-        deck.updateTopCard(playedCard);
+        } else if (playedCard.getValue() == 12) {
+            mod.getNextPlayer(this).chainDraw(playedCard, 2);
+
+        } else if (playedCard.getValue() == 13) {
+            handleWildCard(playedCard);
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
+
+        } else if (playedCard.getValue() == 14) {
+            handleWildCard(playedCard);
+            mod.getNextPlayer(this).chainDraw(playedCard, 4);
+        }
     }
 
-    // NEEDS TO BE IMPLEMENTED-----------------------------------------------------------
+    /*
+     * Method to handle wild card
+     * 
+     * @param playedCard The wild card that was played
+     * 
+     */
     public void handleWildCard(BaseCard playedCard) {
-        /*
-         * Get the color from the player using ui and change the color of the card using
-         * setcolor method
-         * 
-         * Needs to be overriden for bot class
-         */
+
+        String chosenColor = ui.getPlayerColorChoice();
+        playedCard.setColor(chosenColor);
+        System.out.println("Wild card played. Color changed to: " + chosenColor);
+    }
+
+    /*
+     * Method to stack draw cards
+     * @param topCard The top card in the played deck
+     * @param stack The number of cards to draw
+     */
+    public void chainDraw(BaseCard topCard, int stack) {
+        System.out.println("Bot played " + topCard + " you have to play a draw "
+                + (topCard.getValue() == 14 ? "four" : "two") + " card or draw " + stack + " cards");
+        int move = this.ui.getMove();
+        if (move != 0 && hand.get(move - 1).isSameValue(topCard)) {
+            if(hand.get(move - 1).getValue() == 14){
+                handleWildCard(hand.get(move - 1));
+            }
+            hand.remove(move - 1);
+            stack = stack + ((hand.get(move - 1).getValue() == 14) ? 4 : 2);
+            deck.updateTopCard(hand.get(move - 1));
+            System.out.println("Player played " + hand.get(move - 1) + " and stacked to " + stack);
+            mod.getNextPlayer(this).chainDraw(hand.get(move - 1), stack);
+        } else {
+            for (int i = 0; i < stack; i++) {
+                drawCard();
+            }
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
+            System.out.println("Player drew " + stack + " cards");
+        }
     }
 }

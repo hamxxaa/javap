@@ -38,4 +38,24 @@ public class BaseCard {
         }
         return (this.color + " " + this.value);
     }
+
+    public boolean isSameColor(BaseCard card) {
+        return this.color.equals(card.color);
+    }
+
+    public boolean isSameValue(BaseCard card) {
+        return this.value == card.value;
+    }
+
+    public boolean isSpecialCard() {
+        return value >= 10 && value <= 12;
+    }
+
+    public boolean isWildCard() {
+        return value == 13;
+    }
+
+    public boolean isWildDrawFourCard() {
+        return value == 14;
+    }
 }

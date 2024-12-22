@@ -122,6 +122,8 @@ public class Player {
         } else if (playedCard.getValue() == 14) {
             handleWildCard(playedCard);
             mod.getNextPlayer(this).chainDraw(playedCard, 4);
+        } else {
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
         }
     }
 
@@ -140,7 +142,9 @@ public class Player {
 
     /*
      * Method to stack draw cards
+     * 
      * @param topCard The top card in the played deck
+     * 
      * @param stack The number of cards to draw
      */
     public void chainDraw(BaseCard topCard, int stack) {
@@ -148,7 +152,7 @@ public class Player {
                 + (topCard.getValue() == 14 ? "four" : "two") + " card or draw " + stack + " cards");
         int move = this.ui.getMove();
         if (move != 0 && hand.get(move - 1).isSameValue(topCard)) {
-            if(hand.get(move - 1).getValue() == 14){
+            if (hand.get(move - 1).getValue() == 14) {
                 handleWildCard(hand.get(move - 1));
             }
             hand.remove(move - 1);

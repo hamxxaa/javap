@@ -33,7 +33,12 @@ public class Moderator {
         for (int i = 0; i < 7; i++) {
             queue.forEach(player -> player.drawCard());
         }
-        deck.updateTopCard(deck.drawCard());
+
+        BaseCard card = deck.drawCard();
+        if (card.isWildCard() || card.isWildDrawFourCard()) {
+            card.setColor("Red");
+        }
+        deck.updateTopCard(card);
     }
 
     // Method to start and play the game
@@ -44,6 +49,13 @@ public class Moderator {
         while (playing) {
             currentPlayer.doMove();
             didPlayerWin(currentPlayer);// NEEDS TO BE IMPLEMENTED
+            try {
+                Thread.sleep(500); // Add a delay of 1 second (1000 milliseconds)
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Thread was interrupted, Failed to complete operation");
+            }
+
         }
     }
 

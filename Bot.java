@@ -95,6 +95,7 @@ public class Bot extends Player {
             BaseCard playedCard = playCard(deck.topCard);
             if (playedCard == null) {
                 drawCard();
+                mod.setCurrentPlayer(mod.getNextPlayer(this));
             } else {
                 handleCards(playedCard);
             }
@@ -102,6 +103,7 @@ public class Bot extends Player {
         } else {
             blocked = false;
             System.out.println(this.name + " is blocked");
+            mod.setCurrentPlayer(mod.getNextPlayer(this));
         }
     }
 

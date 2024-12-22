@@ -35,7 +35,6 @@ public class UI {
         System.out.println("Enter the card you want to play:");
         while (true) {
             int move = scanner.nextInt();
-            System.out.println("move:" + move + "handsize: " + player.getHandSize());
             if (move >= 0 && move <= player.getHandSize()) {
                 return move;
             } else {
@@ -44,6 +43,11 @@ public class UI {
         }
     }
 
+    /*
+     * Method to get the color choice for the wild card
+     * 
+     * @return The color chosen by the player
+     */
     public String getPlayerColorChoice() {
         System.out.println("Choose a color for the wild card:");
         System.out.println("1: Red");

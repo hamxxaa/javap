@@ -19,13 +19,13 @@ public class UI {
         System.out.println("0: Draw a card");
         int i = 1;
         for (BaseCard card : player.hand) {
-            System.out.print(i + ": " + card + "\t\t"); // Tab ile yan yana yaz
-            if (i % 3 == 0) { // Her 3 karttan sonra yeni satıra geç
+            System.out.print(i + ": " + card + "\t\t");
+            if (i % 3 == 0) {
                 System.out.println();
             }
             i++;
         }
-        if ((i - 1) % 3 != 0) { // Son satır eksikse alt satıra geç
+        if ((i - 1) % 3 != 0) {
             System.out.println();
         }
     }

@@ -32,9 +32,9 @@ public class BaseCard {
         } else if (value == 12) {
             return (this.color + " " + "Draw Two");
         } else if (value == 13) {
-            return ((this.color == "Wild" ? "" : this.color) + " " + "Wild");
+            return ((this.color == "Wild" ? " " : this.color) + "Wild");
         } else if (value == 14) {
-            return ((this.color == "Wild" ? "" : this.color) + " " + "Wild Draw Four");
+            return ((this.color == "Wild" ? " " : this.color) + "Wild Draw Four");
         }
         return (this.color + " " + this.value);
     }

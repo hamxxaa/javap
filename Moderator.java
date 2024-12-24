@@ -48,7 +48,7 @@ public class Moderator {
         System.out.println("Top card: " + deck.topCard);
         while (playing) {
             currentPlayer.doMove();
-            didPlayerWin(currentPlayer);// NEEDS TO BE IMPLEMENTED
+            didPlayerWin(getPreviusPlayer(currentPlayer));// NEEDS TO BE IMPLEMENTED
             try {
                 Thread.sleep(500); // Add a delay of 1 second (1000 milliseconds)
             } catch (InterruptedException e) {
@@ -76,6 +76,10 @@ public class Moderator {
      */
     public Player getNextPlayer(Player p) {
         return queue.get(p).next.data;
+    }
+
+    public Player getPreviusPlayer(Player p) {
+        return queue.get(p).prev.data;
     }
 
     /*

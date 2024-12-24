@@ -90,7 +90,7 @@ public class Bot extends Player {
     // Override doMove method to perform a move for the bot
     @Override
     public void doMove() {
-        System.out.println(this.name + "'s turn");
+        System.out.println(this.name + "'s turn" + " (Has " + hand.size() + " cards)");
         if (!blocked) {
             BaseCard playedCard = playCard(deck.topCard);
             if (playedCard == null) {

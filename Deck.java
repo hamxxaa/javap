@@ -64,6 +64,9 @@ public class Deck {
      */
     public void updateTopCard(BaseCard playedCard) {
         if (this.topCard != null) {
+            if (playedCard.isWildCard() || playedCard.isWildDrawFourCard()) {
+                playedCard.setColor("Wild");
+            }
             playedDeck.add(topCard);
         }
         this.topCard = playedCard;

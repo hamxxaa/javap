@@ -19,7 +19,7 @@ public class UI {
         System.out.println("0: Draw a card");
         int i = 1;
         for (BaseCard card : player.hand) {
-            System.out.print(String.format("%-20s", i + ": " + card));
+            System.out.print(String.format("%-25s", i + ": " + card));
             if (i % 3 == 0) {
                 System.out.println();
             }
@@ -40,11 +40,16 @@ public class UI {
         System.out.println("Top card: " + deck.topCard);
         System.out.println("Enter the card you want to play:");
         while (true) {
-            int move = scanner.nextInt();
-            if (move >= 0 && move <= player.getHandSize()) {
-                return move;
-            } else {
-                System.out.println("Invalid move. Please try again.");
+            try {
+                int move = scanner.nextInt();
+                if (move >= 0 && move <= player.getHandSize()) {
+                    return move;
+                } else {
+                    System.out.println("Invalid move. Please try again.");
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next(); // Clear the invalid input
             }
         }
     }

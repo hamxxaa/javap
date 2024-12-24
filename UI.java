@@ -19,7 +19,7 @@ public class UI {
         System.out.println("0: Draw a card");
         int i = 1;
         for (BaseCard card : player.hand) {
-            System.out.print(i + ": " + card + "\t\t");
+            System.out.print(String.format("%-20s", i + ": " + card));
             if (i % 3 == 0) {
                 System.out.println();
             }
@@ -29,7 +29,6 @@ public class UI {
             System.out.println();
         }
     }
-
 
     /*
      * Method to get the move from the player

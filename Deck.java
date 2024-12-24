@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Deck {
     private List<BaseCard> cards;
-    private static final int DECK_SIZE = 132;
+    private static final int DECK_SIZE = 112;
     public String[] colors = { "Red", "Green", "Blue", "Yellow" };
     private int[] values = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };// 10 is skip, 11 is reverse, 12 is
                                                                                 // draw two, 13 is wild, 14 is wild draw
@@ -23,7 +23,7 @@ public class Deck {
                 cards.add(new BaseCard(color, values[i]));
             }
         }
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 4; i++) {
             cards.add(new BaseCard("Wild", 13));
             cards.add(new BaseCard("Wild", 14));
         }
